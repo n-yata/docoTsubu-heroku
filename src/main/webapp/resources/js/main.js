@@ -9,7 +9,7 @@
 
 		$.ajax({
 			contentType: "Content-Type: application/json; charset=UTF-8",
-			url: "/docoTsubu/MainController",
+			url: "/MainController",
 			type: "GET"
 
 		}).done(function(data, status, xhr){
@@ -36,7 +36,7 @@
 		$("#update").click(function(){
 			$.ajax({
 				contentType: "Content-Type: application/json; charset=UTF-8",
-				url: "/docoTsubu/MainController",
+				url: "/MainController",
 				type: "GET"
 
 			}).done(function(data, status, xhr){
@@ -56,7 +56,7 @@
 					}
 				}else{
 					// リダイレクト
-					location.href = "/docoTsubu/";
+					location.href = "/";
 				}
 			});
 		});
@@ -67,7 +67,7 @@
 			};
 			$.ajax({
 				contentType: "Content-Type: application/json; charset=UTF-8",
-				url: "/docoTsubu/MainController",
+				url: "/MainController",
 				type: "POST",
 				data : JSON.stringify(param)
 

@@ -11,7 +11,7 @@ $(function(){
 		};
 		$.ajax({
 			contentType: "Content-Type: application/json; charset=UTF-8",
-			url: "/docoTsubu/Login",
+			url: "/Login",
 			type: "POST",
 			data : JSON.stringify(param)
 		}).done(function(data, status, xhr){
