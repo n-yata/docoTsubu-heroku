@@ -1,8 +1,6 @@
 package servlet;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,12 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import model.Mutter;
 import model.PostMutterLogic;
 import model.User;
+import util.JsonConvertUtil;
 
 /**
  * Servlet implementation class Main
@@ -31,8 +27,7 @@ public class MainController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-     *      response)
+     *
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -65,31 +60,19 @@ public class MainController extends HttpServlet {
         resMap.put("isLogin", isLogin);
         resMap.put("mutterList", mutterList);
 
-        // JSON文字列に変換
-        ObjectMapper mapper = new ObjectMapper();
-        String resJson = mapper.writeValueAsString(resMap);
-
-        // ヘッダ情報などセット
-        response.setContentType("application/json");
-        response.setHeader("Cache-Control", "nocache");
-        response.setCharacterEncoding("utf-8");
-
         // JSONを戻す
-        PrintWriter out = response.getWriter();
-        out.print(resJson);
+        JsonConvertUtil.convertToJson(resMap, response);
 
     }
 
+    /**
+     *
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         // 送信されたJSONの取得
-        BufferedReader reader = new BufferedReader(request.getReader());
-        String reqJson = reader.readLine();
-
-        // JSONをオブジェクトに変更
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, String> reqMap = mapper.readValue(reqJson, new TypeReference<Map<String, String>>() {});
+        Map<String, String> reqMap = JsonConvertUtil.convertToObject(request);
 
         String text = reqMap.get("text");
 
@@ -130,17 +113,8 @@ public class MainController extends HttpServlet {
         resMap.put("mutterList", resMutterList);
         resMap.put("errorMsg", resErroMsg);
 
-        // JSON文字列に変換
-        String resJson = mapper.writeValueAsString(resMap);
-
-        // ヘッダ情報などセット
-        response.setContentType("application/json");
-        response.setHeader("Cache-Control", "nocache");
-        response.setCharacterEncoding("utf-8");
-
         // JSONを戻す
-        PrintWriter out = response.getWriter();
-        out.print(resJson);
+        JsonConvertUtil.convertToJson(resMap, response);
 
     }
 
