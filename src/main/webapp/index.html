@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>どこつぶ</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="resources/js/index.js"></script>
+</head>
+<body>
+    <div id="index">
+        <h1>どこつぶへようこそ</h1>
+            ユーザ名：<input type="text" id="name" name="name" /><br />
+            パスワード：<input type="password" id="pass" name="pass" /><br />
+            <input type="button" id="btn" value="ログイン" />
+    </div>
+
+    <div id="loginResult">
+        <h1>どこつぶログイン</h1>
+        <div id="success">
+            <p>ログインに成功しました</p>
+            <div id="userName"></div>
+            <a href="/docoTsubu/Main">つぶやき投稿・閲覧へ</a>
+        </div>
+        <div id="failed">
+            <p>ログインに失敗しました</p>
+            <a href="/docoTsubu/">TOPへ</a>
+        </div>
+    </div>
+</body>
+</html>
