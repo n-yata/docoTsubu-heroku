@@ -29,7 +29,7 @@
 				}
 			}else{
 				// リダイレクト
-				location.href = "/docoTsubu/";
+				location.href = "/";
 			}
 		});
 
