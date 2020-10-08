@@ -18,7 +18,7 @@ function doGet(){
 				// つぶやきリストを表示
 				var mutterListHtml = "";
 				$.each(mutterList, function(i, val){
-					mutterListHtml += val.userName + " : " + val.text + "<a href="" id="delete">削除</a></br>";
+					mutterListHtml += val.userName + " : " + val.text + '<a href="" id="delete">削除</a></br>';
 				});
 				$("#mutterList").html(mutterListHtml);
 				$("#errorMsg").hide();
