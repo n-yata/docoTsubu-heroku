@@ -7,6 +7,8 @@ import java.io.Serializable;
  * @author yata1
  */
 public class Mutter implements Serializable{
+    /** id */
+    private int id;
     /** ユーザー名 */
     private String userName;
     /** つぶやき内容 */
@@ -20,7 +22,15 @@ public class Mutter implements Serializable{
         this.userName = userName;
         this.text = text;
     }
+    public Mutter(int id, String userName, String text) {
+        this.id = id;
+        this.userName = userName;
+        this.text = text;
+    }
 
+    public int getId() {
+        return id;
+    }
     public String getUserName() {
         return userName;
     }

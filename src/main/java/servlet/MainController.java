@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.GetMutterListLogic;
 import model.Mutter;
 import model.PostMutterLogic;
 import model.User;
@@ -32,15 +32,9 @@ public class MainController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // つぶやきリストをアプリケーションスコープから取得
-        ServletContext application = this.getServletContext();
-        List<Mutter> mutterList = (List<Mutter>) application.getAttribute("mutterList");
-
-        // 取得できなかった場合は、つぶやきリストを新規作成してアプリケーションスコープに保存
-        if(mutterList == null) {
-            mutterList = new ArrayList<Mutter>();
-            application.setAttribute("mutterList", mutterList);
-        }
+        //つぶやきリストを取得
+        GetMutterListLogic getMutterListLogic = new GetMutterListLogic();
+        List<Mutter> mutterList = getMutterListLogic.execute();
 
         // ログインしているか確認するためセッションスコープからユーザー情報を取得
         HttpSession session = request.getSession();
@@ -81,10 +75,6 @@ public class MainController extends HttpServlet {
 
         // 入力値チェック
         if(text != null && text.length() != 0) {
-            // アプリケーションスコープに保存されたつぶやきリストを取得
-            ServletContext application = this.getServletContext();
-            List<Mutter> mutterList = (List<Mutter>) application.getAttribute("mutterList");
-
             // セッションスコープに保存されたユーザー情報を取得
             HttpSession session = request.getSession();
             User loginUser = (User) session.getAttribute("loginUser");
@@ -92,13 +82,7 @@ public class MainController extends HttpServlet {
             // つぶやきリストに追加
             Mutter mutter = new Mutter(loginUser.getName(), text);
             PostMutterLogic postMutterLogic = new PostMutterLogic();
-            postMutterLogic.execute(mutter, mutterList);
-
-            // アプリケーションスコープにつぶやきリストを保存
-            application.setAttribute("mutterList", mutterList);
-
-            // レスポンス用変数に格納
-            resMutterList = mutterList;
+            postMutterLogic.execute(mutter);
 
         }else {
             // エラーメッセージをJSONに変換して送信
@@ -107,6 +91,13 @@ public class MainController extends HttpServlet {
             // レスポンス用変数に格納
             resErroMsg = errorMsg;
         }
+
+        //つぶやきリストを取得
+        GetMutterListLogic getMutterListLogic = new GetMutterListLogic();
+        List<Mutter> mutterList = getMutterListLogic.execute();
+
+        // レスポンス用変数に格納
+        resMutterList = mutterList;
 
         // 戻り値用のオブジェクト作成
         Map<String, Object> resMap = new HashMap<>();
