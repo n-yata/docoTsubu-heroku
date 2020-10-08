@@ -74,7 +74,7 @@ public class MainController extends HttpServlet {
         List<Mutter> resMutterList = new ArrayList<>();
         String resErroMsg = "";
 
-        if (operate == "create" ) {
+        if (operate.equals("create")) {
             // 入力値チェック
             if (text != null && text.length() != 0) {
                 // セッションスコープに保存されたユーザー情報を取得
@@ -95,7 +95,7 @@ public class MainController extends HttpServlet {
             }
         }
 
-        if (operate == "delete" ) {
+        if (operate.equals("delete")) {
             // つぶやきリストを削除
             DeleteMutterLogic deleteMutterLogic = new DeleteMutterLogic();
             deleteMutterLogic.execute();
