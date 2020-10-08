@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.DeleteMutterLogic;
 import model.GetMutterListLogic;
 import model.Mutter;
 import model.PostMutterLogic;
@@ -32,7 +33,7 @@ public class MainController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        //つぶやきリストを取得
+        // つぶやきリストを取得
         GetMutterListLogic getMutterListLogic = new GetMutterListLogic();
         List<Mutter> mutterList = getMutterListLogic.execute();
 
@@ -40,12 +41,11 @@ public class MainController extends HttpServlet {
         HttpSession session = request.getSession();
         User loginUser = (User) session.getAttribute("loginUser");
 
-
         // ログイン情報の確認
         boolean isLogin;
-        if(loginUser == null) {
+        if (loginUser == null) {
             isLogin = false;
-        }else{
+        } else {
             isLogin = true;
         }
 
@@ -69,30 +69,39 @@ public class MainController extends HttpServlet {
         Map<String, String> reqMap = JsonConvertUtil.convertToObject(request);
 
         String text = reqMap.get("text");
+        String operate = reqMap.get("operate");
 
         List<Mutter> resMutterList = new ArrayList<>();
         String resErroMsg = "";
 
-        // 入力値チェック
-        if(text != null && text.length() != 0) {
-            // セッションスコープに保存されたユーザー情報を取得
-            HttpSession session = request.getSession();
-            User loginUser = (User) session.getAttribute("loginUser");
+        if (operate == "create" ) {
+            // 入力値チェック
+            if (text != null && text.length() != 0) {
+                // セッションスコープに保存されたユーザー情報を取得
+                HttpSession session = request.getSession();
+                User loginUser = (User) session.getAttribute("loginUser");
 
-            // つぶやきリストに追加
-            Mutter mutter = new Mutter(loginUser.getName(), text);
-            PostMutterLogic postMutterLogic = new PostMutterLogic();
-            postMutterLogic.execute(mutter);
+                // つぶやきリストに追加
+                Mutter mutter = new Mutter(loginUser.getName(), text);
+                PostMutterLogic postMutterLogic = new PostMutterLogic();
+                postMutterLogic.execute(mutter);
 
-        }else {
-            // エラーメッセージをJSONに変換して送信
-            String errorMsg = "つぶやきが入力されていません";
+            } else {
+                // エラーメッセージをJSONに変換して送信
+                String errorMsg = "つぶやきが入力されていません";
 
-            // レスポンス用変数に格納
-            resErroMsg = errorMsg;
+                // レスポンス用変数に格納
+                resErroMsg = errorMsg;
+            }
         }
 
-        //つぶやきリストを取得
+        if (operate == "delete" ) {
+            // つぶやきリストを削除
+            DeleteMutterLogic deleteMutterLogic = new DeleteMutterLogic();
+            deleteMutterLogic.execute();
+        }
+
+        // つぶやきリストを取得
         GetMutterListLogic getMutterListLogic = new GetMutterListLogic();
         List<Mutter> mutterList = getMutterListLogic.execute();
 

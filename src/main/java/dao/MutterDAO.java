@@ -80,4 +80,34 @@ public class MutterDAO {
         }
         return true;
     }
+
+    public boolean delete() {
+        Connection conn = null;
+        try {
+            // データベースへ接続
+            conn = Database.getConnection();
+            // DELETE文の準備
+            String sql = "DELETE FROM MUTTER;";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            // DELETE文を実行
+            int result = pstmt.executeUpdate();
+
+            if(result != 1) {
+                return false;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }finally {
+            //データベース切断
+            if(conn != null) {
+                try {
+                    conn.close();
+                }catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return true;
+    }
 }

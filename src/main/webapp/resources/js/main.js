@@ -18,7 +18,7 @@ function doGet(){
 				// つぶやきリストを表示
 				var mutterListHtml = "";
 				$.each(mutterList, function(i, val){
-					mutterListHtml += val.userName + " : " + val.text + '<a href="" id="delete">削除</a></br>';
+					mutterListHtml += val.userName + " : " + val.text + "</br>";
 				});
 				$("#mutterList").html(mutterListHtml);
 				$("#errorMsg").hide();
@@ -80,9 +80,18 @@ $(function(){
 		doGet();
 	});
 
-	$("#btn").click(function(){
+	$("#create").click(function(){
 		var param = {
-				text: $("#text").val()
+				text: $("#text").val(),
+				operate: "create"
+		};
+		doPost(param);
+	});
+
+	$("#delete").click(function(){
+		var param = {
+				text: $("#text").val(),
+				operate: "delete"
 		};
 		doPost(param);
 	});
